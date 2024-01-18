@@ -5,6 +5,10 @@ import streamlit as st
 import plotly.express as px
 from utils import RenameColumns, CastToFloat, CastToDatetime, FillMissingData, AddColumn
 from sklearn.pipeline import Pipeline
+import joblib
+from joblib import load
+from datetime import datetime, timedelta
+import plotly.graph_objects as go
 
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'fiap-tech-challenge-4-5cd1d93599ab.json'
@@ -222,13 +226,106 @@ with tab2:
 with tab3:
     '''
     ## Predição do Preço Petróleo Brent  
-    '''  
+    '''
+
+    df_tab3 = df.copy()
+
+    pipeline_tab3 = Pipeline([
+        ('rename_columns', RenameColumns()),        
+        ('fill_missing_data', FillMissingData()),
+        ('add_column', AddColumn())
+    ])
+
+    df_pipe_tab3 = pipeline_tab3.transform(df_tab3)
+
+    input_days_to_predict = int(st.slider('Selecione quantos dias você quer predizer', 1, 30)) 
+
+    if st.button('Enviar'):
+        data_atual_tab3 = datetime.now().date()
+        data_especifica = datetime.strptime('2024-01-08', '%Y-%m-%d').date()
+
+        diferenca_em_dias = (data_atual_tab3 - data_especifica).days
+        qtde_dias_a_predizer = input_days_to_predict + diferenca_em_dias + 1
+
+
+        model = joblib.load('modelo/sm.joblib')
+        final_pred = model.predict(h = qtde_dias_a_predizer) 
+
+
+        # transformações para melhorar a exibição dos dados na tabela
+        final_pred_filtrado = final_pred[final_pred['ds'] > datetime.now()] 
+        final_pred_filtrado.rename(columns= {'ds' : 'Data', 'SeasWA': 'Preço Predito (US$)'}, inplace=True)
+        final_pred_filtrado['Data'] = final_pred_filtrado['Data'].dt.normalize()  
+        final_pred_filtrado.reset_index(drop=True, inplace=True)
+
+        st.dataframe(final_pred_filtrado)
+
+       
+        # transformações para que o gráfico exiba além do período predito, os dados dos 3 meses anteriores
+        data_tres_meses_atras = data_atual_tab3 - timedelta(days=3 * 30)
+        data_ha_3_meses = data_atual_tab3 - timedelta(days=3 * 30)
+
+        df_pipe_tab3 = df_pipe_tab3[df_pipe_tab3['ds'] >= pd.to_datetime(data_ha_3_meses)]
+
+        df_pipe_tab3.rename(columns= {'ds' : 'Data', 'y': 'Preço Predito (US$)'}, inplace=True)
+        df_pipe_tab3_filtrado = df_pipe_tab3[['Data', 'Preço Predito (US$)']]   
+
+        df_resultado = pd.concat([df_pipe_tab3_filtrado, final_pred_filtrado], ignore_index=True).sort_values(by='Data')        
+        df_resultado.rename(columns= {'Preço Predito (US$)' : 'Preco_pretroleo_brent'}, inplace=True)
+
+
+        fig = px.line(df_resultado, x=df_resultado['Data'], y=df_resultado['Preco_pretroleo_brent'], title='Previsão do Preço por Barril do Petróleo Bruto Brent')
+        fig.update_xaxes(title='Data')
+        fig.update_yaxes(title='Preço (US$)')
+
+        
+        # linha vertical tracejada alocada na data atual para marcar a transição entre o período do preço real e o período do preço predito
+        fig.add_trace(go.Scatter(x=[data_atual_tab3, data_atual_tab3], y=[min(df_resultado['Preco_pretroleo_brent']), max(df_resultado['Preco_pretroleo_brent'])+2],
+                         mode='lines',
+                         line=dict(color='gray', dash='dash'),
+                         name='Data atual'))
+        
+
+        #annotation para diferenciar o período do preço real do período do preço predito
+        data_anterior = data_atual_tab3 - timedelta(days= 45)
+        data_posterior = data_atual_tab3 + timedelta(days= qtde_dias_a_predizer/2)
+        
+        fig.add_annotation(
+            x=data_anterior,
+            y= max(df_resultado['Preco_pretroleo_brent']) + 1,
+            text='Preço Real (US$)',
+            showarrow=True,
+            arrowhead=2,
+            arrowcolor='green',
+            arrowwidth=2,
+            ax=0,
+            ay=-40
+        )
+
+        fig.add_annotation(
+            x=data_posterior,
+            y= max(df_resultado['Preco_pretroleo_brent']) + 1,
+            text='Preço Predito (US$)',
+            showarrow=True,
+            arrowhead=2,
+            arrowcolor='red',
+            arrowwidth=2,
+            ax=0,
+            ay=-40
+        )        
+ 
+        st.plotly_chart(fig)
+
+
+
 
 with tab4:
     '''
     ## Performance dos Modelos
 
-    '''        
+    '''    
+
+    
 
 with tab5:
     '''
