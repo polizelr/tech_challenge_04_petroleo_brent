@@ -1,0 +1,17 @@
+numpy
+pandas
+matplotlib
+matplotlib-inline
+seaborn
+streamlit
+plotly
+plotly-express
+scikit-learn
+joblib
+statsforecast
+sqlalchemy
+bs4
+lxml
+google-cloud-bigquery==3.13.0
+pandas-gbq
+db-dtypes
