@@ -11,7 +11,6 @@ from datetime import datetime, timedelta
 import plotly.graph_objects as go
 
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'fiap-tech-challenge-4-5cd1d93599ab.json'
 project_id = 'fiap-tech-challenge-4'
 dataset_id = 'tech_challenge_4'
 table_id = 'petroleo_brent'
@@ -217,16 +216,15 @@ with tab1:
     st.plotly_chart(fig)
 
 
-with tab2:
-    '''
-    ## Dashboard
+with tab2: 
 
-    '''
+    st.markdown("## Dashboard")
+
+
 
 with tab3:
-    '''
-    ## Predição do Preço Petróleo Brent  
-    '''
+    
+    st.markdown("## Predição do Preço Petróleo Brent")    
 
     df_tab3 = df.copy()
 
@@ -317,18 +315,28 @@ with tab3:
         st.plotly_chart(fig)
 
 
+with tab4:    
 
+    st.markdown("## Performance dos Modelos") 
 
-with tab4:
-    '''
-    ## Performance dos Modelos
-
-    '''    
-
-    
-
+     
 with tab5:
-    '''
-    ## Detalhamento Técnico
+   
+    st.markdown("## Detalhamento Técnico") 
 
-    '''
+
+    texto = """
+        A arquitetura do trabalho desenvolvido segue os seguintes passos:
+
+        + **Web Scraping do Site do IPEA:** Utilizando web scraping, os dados do IPEA são extraídos regularmente. Esse processo é automatizado por meio do GitHub Actions, garantindo que o script seja executado diariamente às 10h da manhã.
+
+        + **Armazenamento no Google BigQuery:** Os dados extraídos são armazenados na tabela "petroleo_brent" no Google BigQuery. Isso proporciona uma solução escalável e eficiente para armazenamento e gerenciamento de grandes conjuntos de dados.
+
+        + **Notebook de Avaliação de Séries Temporais:** Um notebook foi desenvolvido para realizar a avaliação de desempenho dos modelos Naive, Seasonal Naive, Seasonal Window Average, Seasonal Exponential Smoothing Optimized e AutoARIMA. Este notebook se conecta ao BigQuery para extrair os datasets necessários, permitindo análises detalhadas sobre a série temporal e a performance dos modelos.
+
+        + **Aplicação Streamlit:** Além do notebook, uma aplicação Streamlit foi desenvolvida para oferecer uma interface interativa para a análise das séries temporais. Essa aplicação também se conecta ao BigQuery para extrair dados em tempo real, fornecendo uma visualização dinâmica e amigável para os usuários finais.
+
+        Essa arquitetura cria um fluxo automatizado e contínuo, desde a extração dos dados até a análise e visualização, garantindo atualizações diárias e facilitando o acompanhamento das tendências e padrões nas séries temporais relacionadas ao setor de petróleo.
+
+    """
+    st.markdown(texto) 
