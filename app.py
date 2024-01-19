@@ -41,7 +41,7 @@ with tab0:
 
     st.markdown("## Introdução")
 
-    paragrafo1_tab0 = "No dinâmico cenário do setor de energia, o petróleo Brent assume uma posição central como referência global para os preços do petróleo. Este projeto concentra-se na exploração e compreensão das nuances que moldam o comportamento do preço do petróleo Brent, utilizando dados do Instituto de Pesquisa Econômica Aplicada (<a href='https://www.example.com' target='_blank'>IPEA</a>). Além da análise dos dados, nossa abordagem vai além, incorporando a criação de um dashboard interativo que não apenas visualiza informações cruciais, mas também gera insights valiosos para a tomada de decisão no mercado de commodities."
+    paragrafo1_tab0 = "No dinâmico cenário do setor de energia, o petróleo Brent assume uma posição central como referência global para os preços do petróleo. Este projeto concentra-se na exploração e compreensão das nuances que moldam o comportamento do preço do petróleo Brent, utilizando dados do Instituto de Pesquisa Econômica Aplicada (<a href='http://www.ipeadata.gov.br/ExibeSerie.aspx?module=m&serid=1650971490&oper=view' target='_blank'>IPEA</a>). Além da análise dos dados, nossa abordagem vai além, incorporando a criação de um dashboard interativo que não apenas visualiza informações cruciais, mas também gera insights valiosos para a tomada de decisão no mercado de commodities."
     paragrafo2_tab0 = "A essência deste trabalho está na aplicação de modelos de séries temporais, uma ferramenta robusta na previsão de tendências em séries temporais. Nosso objetivo vai além de compreender o comportamento passado do preço do petróleo Brent; buscamos antecipar movimentos futuros, contribuindo para uma visão mais informada e estratégica. A escolha do modelo ideal resulta de uma análise meticulosa, assegurando que o método escolhido seja capaz de realizar previsões de maneira precisa e eficaz."
     paragrafo3_tab0 = "Além disso, avançamos na implementação prática dos resultados obtidos, desenvolvendo um ambiente de produção interativo por meio da plataforma Streamlit. Esse deploy em produção oferece uma aplicação prontamente acessível, permitindo que stakeholders e tomadores de decisão explorem visualmente os insights gerados, facilitando a incorporação dessas informações no processo decisório cotidiano."
     paragrafo4_tab0 = "Ao concluir este trabalho, não apenas contribuímos para uma compreensão mais profunda das dinâmicas que influenciam o preço do petróleo Brent, mas também fornecemos uma ferramenta prática e acionável para apoiar a tomada de decisão no complexo e volátil mercado de commodities."
@@ -260,9 +260,7 @@ with tab3:
         final_pred_filtrado = final_pred[final_pred['ds'] > datetime.now()] 
         final_pred_filtrado.rename(columns= {'ds' : 'Data', 'SeasWA': 'Preço Predito (US$)'}, inplace=True)
         final_pred_filtrado['Data'] = final_pred_filtrado['Data'].dt.normalize()  
-        final_pred_filtrado.reset_index(drop=True, inplace=True)
-
-        st.dataframe(final_pred_filtrado)
+        final_pred_filtrado.reset_index(drop=True, inplace=True)        
 
        
         # transformações para que o gráfico exiba além do período predito, os dados dos 3 meses anteriores
@@ -319,6 +317,8 @@ with tab3:
         )        
  
         st.plotly_chart(fig)
+
+        st.dataframe(final_pred_filtrado)
 
 
 with tab4:    
