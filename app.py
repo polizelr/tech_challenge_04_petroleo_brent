@@ -1,6 +1,4 @@
 import pandas as pd
-import os
-from google.cloud.bigquery.client import Client
 import streamlit as st
 import plotly.express as px
 from utils import RenameColumns, CastToFloat, CastToDatetime, FillMissingData, AddColumn
@@ -9,19 +7,27 @@ import joblib
 from joblib import load
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
+from google.oauth2 import service_account
+from google.cloud import bigquery
+
+credentials = service_account.Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"]
+)
+client = bigquery.Client(credentials=credentials)
+
+@st.cache_data(ttl=600)
+def run_query(query):
+    query_job = client.query(query)
+    df = query_job.to_dataframe()
+    return df
 
 
 project_id = 'fiap-tech-challenge-4'
 dataset_id = 'tech_challenge_4'
 table_id = 'petroleo_brent'
-client = Client(project = project_id)
 
 try:
-    query = f'SELECT * FROM {project_id}.{dataset_id}.{table_id} order by data desc;'
-
-    query_job = client.query(query)
-
-    df = query_job.to_dataframe()
+    df = run_query(f'SELECT * FROM {project_id}.{dataset_id}.{table_id} order by data desc;')
 
 except Exception as e:
     print(f'Ocorreu um erro ao obter os dados do Google BigQuery: {e}')
