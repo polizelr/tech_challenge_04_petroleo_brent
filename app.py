@@ -20,6 +20,10 @@ import statsmodels.api as sm
 from google.oauth2 import service_account
 from google.cloud import bigquery
 
+st.set_page_config(
+    page_title="Petróleo Bruto Brent"
+)
+
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"]
 )
