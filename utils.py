@@ -79,3 +79,35 @@ class AddColumn (BaseEstimator, TransformerMixin):
         df['unique_id'] = 'value'       
 
         return df
+    
+
+class SetIndex(BaseEstimator, TransformerMixin):
+    def __init__(self, ft_to_cast='ds'):        
+        self.ft_to_cast = ft_to_cast
+
+
+    def fit(self, df):
+        return self
+    
+    def transform(self, df):
+        if set([self.ft_to_cast]).issubset(df.columns):
+            try:
+                df.set_index(self.ft_to_cast, inplace = True)
+            except ValueError:                
+                pass
+            
+        return df
+    
+class TransformIndexToColumn(BaseEstimator, TransformerMixin):
+    def __init__(self, ft_to_cast='ds'):        
+        self.ft_to_cast = ft_to_cast
+
+
+    def fit(self, df):
+        return self
+    
+    def transform(self, df):
+        df[self.ft_to_cast] = df.index
+        df.reset_index(drop=True, inplace=True) 
+            
+        return df
