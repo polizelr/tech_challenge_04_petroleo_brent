@@ -663,7 +663,7 @@ with tab4:
     st.markdown(texto_justificado6_tab4, unsafe_allow_html=True)
 
     treino = df_pipe_tab4_sf[(df_pipe_tab4_sf['ds'] >= pd.to_datetime('2022-10-01')) & (df_pipe_tab4_sf['ds'] < pd.to_datetime('2023-10-01'))]
-    valid = df_pipe_tab4_sf[df_pipe_tab4_sf['ds'] >= pd.to_datetime('2023-10-01')]
+    valid = df_pipe_tab4_sf[(df_pipe_tab4_sf['ds'] >= pd.to_datetime('2023-10-01')) & (df_pipe_tab4_sf['ds'] < pd.to_datetime('2024-01-16'))]
 
     h = valid.index.nunique()
 
@@ -829,7 +829,7 @@ with tab4:
     st.write(f"**RMSE**: {rmse3:.2f}")
     st.write(f"**MAPE**: {mape3:.2%}")
 
-    paragrafo25_tab4 = f'<p style="text-align: justify;">Utilizando a sazonalidade de {best_season_length_swa} e a janela de {best_window_size_swa}, o Seasonal Window Average obteve resultados excelentes (WMAPE: {wmape3:.2%}, RMSE: {rmse3:.2f} e MAPE: {mape3:.2f}), quando comparado aos modelos anteriores, além de conseguir capturar bem o comportamento dos dados.</p>'
+    paragrafo25_tab4 = f'<p style="text-align: justify;">Utilizando a sazonalidade de {best_season_length_swa} e a janela de {best_window_size_swa}, o Seasonal Window Average obteve resultados excelentes (WMAPE: {wmape3:.2%}, RMSE: {rmse3:.2f} e MAPE: {mape3:.2%}), quando comparado aos modelos anteriores, além de conseguir capturar bem o comportamento dos dados.</p>'
     st.markdown(paragrafo25_tab4, unsafe_allow_html=True)
 
 
@@ -845,7 +845,7 @@ with tab4:
     best_season_length_seso = None
 
     # Grid Search for SeasonalExponentialSmoothingOptimized
-    for season_length in [7, 30, 90, 341, 365]:
+    for season_length in [7, 30, 90, 171, 365]:
         model_seso_1 = StatsForecast(models=[SeasonalExponentialSmoothingOptimized(season_length=season_length)], freq='D', n_jobs=-1)
         model_seso_1.fit(treino)
 
@@ -888,7 +888,7 @@ with tab4:
     st.write(f"**RMSE**: {rmse4:.2f}")
     st.write(f"**MAPE**: {mape4:.2%}")
 
-    paragrafo27_tab4 = f'<p style="text-align: justify;">Utilizando a sazonalidade de {best_season_length_seso} dias, o modelo Seasonal Exponential Smoothing Optimized conseguiu obter bons resultados (WMAPE: {wmape4:.2%}, RMSE: {rmse4:.2f} e MAPE: {mape4:.2f}), porém não conseguiu superar o modelo Seasonal Window Average.</p>'
+    paragrafo27_tab4 = f'<p style="text-align: justify;">Utilizando a sazonalidade de {best_season_length_seso} dias, o modelo Seasonal Exponential Smoothing Optimized conseguiu obter bons resultados (WMAPE: {wmape4:.2%}, RMSE: {rmse4:.2f} e MAPE: {mape4:.2%}), porém não conseguiu superar o modelo Seasonal Window Average.</p>'
     st.markdown(paragrafo27_tab4, unsafe_allow_html=True)
 
 
