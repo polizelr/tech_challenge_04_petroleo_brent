@@ -952,19 +952,22 @@ with tab5:
    
     st.markdown("## Detalhamento Técnico") 
 
+    iframe_var = '<iframe style="border:none" width="800" height="450" src="https://whimsical.com/embed/BFTNnmmP8gRDZ9Hvyh1dE6"></iframe>'
+    st.components.v1.html(iframe_var, width=800, height=500)
+
 
     texto = """
         A arquitetura do trabalho desenvolvido segue os seguintes passos:
 
-        + **Web Scraping do Site do IPEA:** Utilizando web scraping, os dados do IPEA são extraídos regularmente. Esse processo é automatizado por meio do GitHub Actions, garantindo que o script seja executado diariamente às 10h da manhã.
+        + **Web Scraping do Site do IPEA:** Os dados do IPEA, referente ao preço do petróleo bruto Brent, são extraídos regularmente. Esse processo é automatizado por meio do GitHub Actions, garantindo que o script seja executado diariamente às 10h da manhã.
 
         + **Armazenamento no Google BigQuery:** Os dados extraídos são armazenados na tabela "petroleo_brent" no Google BigQuery. Isso proporciona uma solução escalável e eficiente para armazenamento e gerenciamento de grandes conjuntos de dados.
 
-        + **Notebook de Avaliação de Séries Temporais:** Um notebook foi desenvolvido para realizar a avaliação de desempenho dos modelos Naive, Seasonal Naive, Seasonal Window Average, Seasonal Exponential Smoothing Optimized e AutoARIMA. Este notebook se conecta ao BigQuery para extrair os datasets necessários, permitindo análises detalhadas sobre a série temporal e a performance dos modelos.
+        + **Notebook - Análise dos Modelos:** Um notebook foi desenvolvido com o propósito de realizar a avaliação de desempenho dos modelos Naive, Seasonal Naive, Seasonal Window Average, Seasonal Exponential Smoothing Optimized e AutoARIMA. Este notebook se conecta ao BigQuery para extrair os dados. Após a análise o modelo que obteve a melhor performance é extraído por meio do Joblib.
 
         + **Aplicação Streamlit:** Além do notebook, uma aplicação Streamlit foi desenvolvida para oferecer uma interface interativa para a análise das séries temporais. Essa aplicação também se conecta ao BigQuery para extrair dados em tempo real, fornecendo uma visualização dinâmica e amigável para os usuários finais.
 
-        Essa arquitetura cria um fluxo automatizado e contínuo, desde a extração dos dados até a análise e visualização, garantindo atualizações diárias e facilitando o acompanhamento das tendências e padrões nas séries temporais relacionadas ao setor de petróleo.
-
+        + **Dashboard Power BI:** Um dashboard foi desenvolvido no Power BI com o objetivo de oferecer insights relevantes sobre a variação do preço do petróleo. No entanto, devido ao fato de o Power BI ser uma aplicação paga para publicação de dashboards online, não foi possível disponibilizar a visualização de forma acessível pela web. Para contornar essa limitação, um arquivo .pbix foi gerado e está disponível para download. Dessa forma, os interessados podem baixar o arquivo e executar o dashboard localmente no Power BI para explorar e analisar as informações relacionadas à variação de preços do petróleo.
+       
     """
     st.markdown(texto) 
