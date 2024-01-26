@@ -240,6 +240,42 @@ with tab2:
 
     st.markdown("## Dashboard")
 
+    paragrafo1_tab2 = '<p style="text-align: justify;">Com o intuito de enriquecer as opções de análise dos dados referentes ao petróleo Brent, foi desenvolvido um dashboard no Power BI. Este instrumento proporciona uma visão abrangente da variação de preços ao longo dos anos, oferecendo aos usuários uma ferramenta eficaz para a interpretação e compreensão dessas informações.</p>'
+    st.markdown(paragrafo1_tab2, unsafe_allow_html=True)
+
+    paragrafo6_tab2 = "O dashboard desenvolvido encontra-se atualmente disponível para download e execução local em: <a href='https://github.com/polizelr/tech_challenge_04_petroleo_brent/blob/main/dashboards/Analise_Preco_Petroleo.pbix' target='_blank'>Dashboad Preço Petróleo Brent</a>. "
+
+    texto_justificado_tab2 = f"""
+        <p style="text-align: justify;">{paragrafo6_tab2}</p>    
+    """
+    st.markdown(texto_justificado_tab2, unsafe_allow_html=True)  
+
+
+    st.markdown('### Conexão e Atualização de Dados')
+
+    paragrafo2_tab2 = '<p style="text-align: justify;">O dashboard atualmente utiliza a opção de carga de dados e está conectado ao Big Query, assim como as demais partes do projeto. Recomenda-se, no entanto, como melhorias a publicação do projeto e a conexão via DirectQuery, a fim de otimizar o desempenho e a acessibilidade. A última carga de dados foi realizada em 25/01/2024, e é importante notar que o IPEA disponibilizou informações até 16/01/2024.</p>'
+    st.markdown(paragrafo2_tab2, unsafe_allow_html=True)
+    
+    st.markdown('### Estrutura do Dashboard')
+
+    paragrafo3_tab2 = '<p style="text-align: justify;">O design do dashboard é concebido com simplicidade e eficácia. Ao iniciar a navegação, o usuário é recebido por uma tela inicial, a "Home", que oferece opções para explorar as abas "Geral" e "Cenários".</p>'
+    st.markdown(paragrafo3_tab2, unsafe_allow_html=True)
+
+    st.image('./imagens/dashboard_home.png', caption='Estrutura do Dashboard')
+
+    st.markdown('#### Aba Geral')
+
+    paragrafo4_tab2 = '<p style="text-align: justify;">Na aba Geral, o usuário tem acesso a todos os dados disponíveis, com a capacidade de filtrar informações conforme o intervalo de tempo desejado. Esta seção destaca dois indicadores principais de Maior e Menor Valor, acompanhados por um gráfico de linha que representa a variação do preço ao longo do tempo. Além disso, uma tabela detalhada permite ao usuário analisar o preço do barril desde o nível anual até o diário. Optou-se pelo preço médio nesta tabela, pois essa agregação proporciona uma visão abrangente do comportamento médio dos preços em meses ou anos, destacando tendências relevantes.</p>'
+    st.markdown(paragrafo4_tab2, unsafe_allow_html=True)
+
+    st.image('./imagens/dashboard_geral.png', caption='Aba Geral')
+
+    st.markdown('#### Aba Cenários')
+
+    paragrafo5_tab2 = '<p style="text-align: justify;">Na aba Cenários, as mesmas análises da aba Geral estão disponíveis, mas agora é introduzido o conceito de cenários. O usuário pode filtrar diferentes cenários, atualmente suportando a Crise Econômica de 2008, a Primavera Árabe e a Pandemia de Covid-19. Ao utilizar o filtro de cenário, os dados são automaticamente ajustados para o período relevante, proporcionando insights específicos de cada situação. Essa funcionalidade não apenas facilita a usabilidade, mas também simplifica a construção e interpretação das análises, fornecendo uma perspectiva mais aprofundada.</p>'
+    st.markdown(paragrafo5_tab2, unsafe_allow_html=True)
+
+    st.image('./imagens/dashboard_cenarios.png', caption='Aba Cenários')
 
 
 with tab3:
@@ -952,10 +988,7 @@ with tab5:
    
     st.markdown("## Detalhamento Técnico") 
 
-    iframe_var = '<iframe style="border:none" width="800" height="450" src="https://whimsical.com/embed/BFTNnmmP8gRDZ9Hvyh1dE6"></iframe>'
-    st.components.v1.html(iframe_var, width=800, height=500)
-
-
+    st.image('./imagens/arquitetura.png', caption='Arquitetura do projeto')
     texto = """
         A arquitetura do trabalho desenvolvido segue os seguintes passos:
 
