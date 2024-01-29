@@ -299,21 +299,21 @@ with tab3:
         data_especifica = datetime.strptime('2024-01-08', '%Y-%m-%d').date()
 
         diferenca_em_dias = (data_atual_tab3 - data_especifica).days
-        qtde_dias_a_predizer = input_days_to_predict + diferenca_em_dias + 1
+        qtde_dias_a_predizer = input_days_to_predict + diferenca_em_dias
 
 
         model = joblib.load('modelo/sm.joblib')
         final_pred = model.predict(h = qtde_dias_a_predizer) 
 
+        ultimo_dado_ipea = df_pipe_tab3['ds'].max()
 
         # transformações para melhorar a exibição dos dados na tabela
-        final_pred_filtrado = final_pred[final_pred['ds'] > datetime.now()] 
+        final_pred_filtrado = final_pred[final_pred['ds'] > ultimo_dado_ipea] 
         final_pred_filtrado.rename(columns= {'ds' : 'Data', 'SeasWA': 'Preço Predito (US$)'}, inplace=True)
         final_pred_filtrado['Data'] = final_pred_filtrado['Data'].dt.normalize()  
         final_pred_filtrado.reset_index(drop=True, inplace=True)
 
         # transformações para que o gráfico exiba além do período predito, os dados dos 3 meses anteriores
-        data_tres_meses_atras = data_atual_tab3 - timedelta(days=3 * 30)
         data_ha_3_meses = data_atual_tab3 - timedelta(days=3 * 30)
 
         df_pipe_tab3 = df_pipe_tab3[df_pipe_tab3['ds'] >= pd.to_datetime(data_ha_3_meses)]
@@ -323,7 +323,7 @@ with tab3:
 
         df_resultado = pd.concat([df_pipe_tab3_filtrado, final_pred_filtrado], ignore_index=True).sort_values(by='Data')        
         df_resultado.rename(columns= {'Preço Predito (US$)' : 'Preco_pretroleo_brent'}, inplace=True)
-
+        df_resultado =df_resultado.reset_index(drop=True)
 
         fig = px.line(df_resultado, x=df_resultado['Data'], y=df_resultado['Preco_pretroleo_brent'], title='Previsão do Preço por Barril do Petróleo Bruto Brent')
         fig.update_xaxes(title='Data')
@@ -339,7 +339,7 @@ with tab3:
 
         #annotation para diferenciar o período do preço real do período do preço predito
         data_anterior = data_atual_tab3 - timedelta(days= 45)
-        data_posterior = data_atual_tab3 + timedelta(days= qtde_dias_a_predizer/2)
+        data_posterior = data_atual_tab3 + timedelta(days= input_days_to_predict/2)
         
         fig.add_annotation(
             x=data_anterior,
@@ -369,7 +369,9 @@ with tab3:
  
         st.plotly_chart(fig)
 
-        st.dataframe(final_pred_filtrado)
+        df_final_pred_filtrado = final_pred_filtrado[final_pred_filtrado['Data'] > datetime.now()].reset_index(drop=True)
+
+        st.dataframe(df_final_pred_filtrado)
 
 
 with tab4:    
