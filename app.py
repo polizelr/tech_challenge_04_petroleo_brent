@@ -299,7 +299,7 @@ with tab3:
         data_especifica = datetime.strptime('2024-01-22', '%Y-%m-%d').date()
 
         diferenca_em_dias = (data_atual_tab3 - data_especifica).days
-        qtde_dias_a_predizer = input_days_to_predict + diferenca_em_dias
+        qtde_dias_a_predizer = input_days_to_predict + diferenca_em_dias + 1
 
 
         model = joblib.load('modelo/sm.joblib')
