@@ -296,7 +296,7 @@ with tab3:
 
     if st.button('Enviar'):
         data_atual_tab3 = datetime.now().date()
-        data_especifica = datetime.strptime('2024-01-08', '%Y-%m-%d').date()
+        data_especifica = datetime.strptime('2024-01-22', '%Y-%m-%d').date()
 
         diferenca_em_dias = (data_atual_tab3 - data_especifica).days
         qtde_dias_a_predizer = input_days_to_predict + diferenca_em_dias
@@ -701,7 +701,7 @@ with tab4:
     st.markdown(texto_justificado6_tab4, unsafe_allow_html=True)
 
     treino = df_pipe_tab4_sf[(df_pipe_tab4_sf['ds'] >= pd.to_datetime('2022-10-01')) & (df_pipe_tab4_sf['ds'] < pd.to_datetime('2023-10-01'))]
-    valid = df_pipe_tab4_sf[(df_pipe_tab4_sf['ds'] >= pd.to_datetime('2023-10-01')) & (df_pipe_tab4_sf['ds'] < pd.to_datetime('2024-01-16'))]
+    valid = df_pipe_tab4_sf[(df_pipe_tab4_sf['ds'] >= pd.to_datetime('2023-10-01')) & (df_pipe_tab4_sf['ds'] < pd.to_datetime('2024-01-22'))]
 
     h = valid.index.nunique()
 
@@ -756,7 +756,8 @@ with tab4:
     best_season_length_seasonal_naive = None
 
     # Grid Search for SeasonalNaive
-    for season_length in range(7, 365):
+    # Parâmetro já calculado previamente, para fornecer melhor performance a aplicação streamlit
+    for season_length in [346]:
         model_s_1 = StatsForecast(models=[SeasonalNaive(season_length=season_length)], freq='D', n_jobs=-1)
         model_s_1.fit(treino)
 
@@ -820,8 +821,9 @@ with tab4:
     best_window_size_swa = None
 
     # Grid Search for SeasonalWindowAverage
-    for season_length in [7, 14, 30, 90, 181, 365]:
-        for window_size in [2, 7, 14, 30, 90, 180, 270]:
+    # Parâmetros já calculados previamente, para fornecer melhor performance a aplicação streamlit
+    for season_length in [181]:
+        for window_size in [2]:
             model_sm_1 = StatsForecast(models=[SeasonalWindowAverage(season_length=season_length, window_size=window_size)], freq='D', n_jobs=-1)
             model_sm_1.fit(treino)
 
@@ -883,7 +885,8 @@ with tab4:
     best_season_length_seso = None
 
     # Grid Search for SeasonalExponentialSmoothingOptimized
-    for season_length in [7, 30, 90, 171, 365]:
+    # Parâmetro já calculado previamente, para fornecer melhor performance a aplicação streamlit
+    for season_length in [171]:
         model_seso_1 = StatsForecast(models=[SeasonalExponentialSmoothingOptimized(season_length=season_length)], freq='D', n_jobs=-1)
         model_seso_1.fit(treino)
 
